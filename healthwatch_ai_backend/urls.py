@@ -19,20 +19,11 @@ from healthwatch_ai_app.models.medical_request import MedicalRequest
 from django.urls import path
 from django.urls import include, path
 from rest_framework import routers, serializers, viewsets
-
-class MedicalRequestSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = MedicalRequest
-        fields = ['inmate_id', 'description', 'category', 'duration', 'severity']
-
-
-class MedicalRequestViewSet(viewsets.ModelViewSet):
-    queryset = MedicalRequest.objects.all()
-    serializer_class = MedicalRequestSerializer
+from healthwatch_ai_app.views import MedicalRequestAPIView
+from django.urls import path
 
 router = routers.DefaultRouter()
-router.register(r'medical_requests', MedicalRequestViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/medical-requests', MedicalRequestAPIView.as_view(), name='medical-requests'),
 ]

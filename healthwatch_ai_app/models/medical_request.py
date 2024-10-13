@@ -19,11 +19,11 @@ class MedicalRequest(models.Model):
   inmate_id = models.CharField(blank=False, null=False, max_length=16)
   description = models.CharField(max_length=2000)
   category = models.CharField(max_length=30, null=False, blank=False, default='')
-  duration = models.CharField(
-    max_length=30,
-    null=False,
-    blank=False,
-    choices=([(tag.name, tag.value) for tag in Duration])
+  duration_amount = models.FloatField(default=0.5, blank=False)
+  duration_type = models.CharField(
+    max_length=10,
+    default=('days', 'Days'),
+    choices=[('days', 'Days'), ('months', 'Months'), ('years', 'Years')]
   )
   severity = models.CharField(
     default='',

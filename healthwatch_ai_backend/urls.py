@@ -26,4 +26,5 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('api/medical-requests', MedicalRequestAPIView.as_view(), name='medical-requests'),
+    path('api/medical-requests', MedicalRequestAPIView.as_view(), name='medical-requests'),
 ]

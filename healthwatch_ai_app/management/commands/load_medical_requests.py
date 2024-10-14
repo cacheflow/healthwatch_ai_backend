@@ -10,16 +10,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         file_paths = ['training_data.csv']
+        duration_amount = random.randrange(1, 31)
+        duration_type = random.choice([('days', 'Days'), ('months', 'Months'), ('years', 'Years')])
         for path in file_paths:
             df = pd.read_csv(path)
             medical_requests = []
             for index, row in df.iterrows():
+
                 medical_requests.append(MedicalRequest(
                     inmate_id=row['id'],
                     description=row['request_text'],
                     severity=row['severity'],
                     category=row['category'],
-                    duration=random.choice(list(Duration)).value
+                    duration_type=duration_type,
+                    duration_amount=duration_amount
                 ))
 
             MedicalRequest.objects.bulk_create(medical_requests)

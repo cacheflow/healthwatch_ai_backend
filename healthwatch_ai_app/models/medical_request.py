@@ -14,6 +14,7 @@ class Duration(Enum):
 class MedicalRequestSeverity(Enum):
   HIGH = 'High'
   MEDIUM = 'Medium'
+  MODERATE = 'Moderate'
   LOW = 'Low'
 
 class MedicalRequest(models.Model):
@@ -24,7 +25,7 @@ class MedicalRequest(models.Model):
   duration_type = models.CharField(
     max_length=10,
     default=('days', 'Days'),
-    choices=[('days', 'Days'), ('months', 'Months'), ('years', 'Years')]
+    choices=[('days', 'Days'), ('weeks', 'Weeks'), ('months', 'Months'), ('years', 'Years')]
   )
   severity = models.CharField(
     default='',

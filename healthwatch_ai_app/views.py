@@ -3,9 +3,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models.medical_request import MedicalRequest
 from .serializers import MedicalRequestSerializer, MedicalCreateRequestSerializer
+import logging
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+logger = logging.getLogger(__name__)
+
+@method_decorator(csrf_exempt, name='dispatch')
 class MedicalRequestAPIView(APIView):
     def get(self, request):
+      logger.info(f"Received data: {request.data}")
       requests = MedicalRequest.objects.all()
       serializer = MedicalRequestSerializer(requests, many=True)
       return Response(serializer.data)

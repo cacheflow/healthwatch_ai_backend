@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
 from enum import Enum
+
 # Create your models here.
 
 class Duration(Enum):

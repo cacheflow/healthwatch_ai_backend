@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Load medical requests from a CSV file'
 
     def handle(self, *args, **kwargs):
-        file_paths = ['training_data.csv']
+        file_paths = ['sample_inmate_medical_requests_16.csv']
         duration_amount = random.randrange(1, 31)
         duration_type = random.choice([('days', 'Days'), ('months', 'Months'), ('years', 'Years')])
         for path in file_paths:

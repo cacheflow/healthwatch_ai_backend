@@ -8,6 +8,8 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from .ml_models import MedicalRequestClassifier
+from .ml_models import SimilarMedicalRequestAnalyzer
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +21,16 @@ class MedicalRequestAPIView(APIView):
       serializer = MedicalRequestSerializer(requests, many=True)
       return Response(serializer.data)
 
+    
     def post(self, request):
+      inmate_id = request.data["inmate_id"]
+      description = request.data['description']
+      similar_request = MedicalRequest().find_similar_requests(inmate_id, description)
+      if similar_request:
+        similar_request.increment_submission()
+        medical_request_serializer = MedicalRequestSerializer(medical_request)
+        return Response(medical_request_serializer.data, status=status.HTTP_201_CREATED)
+      
       serializer = MedicalCreateRequestSerializer(data=request.data)
       if serializer.is_valid():
         medical_request = serializer.save()
@@ -30,6 +41,6 @@ class MedicalRequestAPIView(APIView):
         medical_request.save()
         medical_request_serializer = MedicalRequestSerializer(medical_request)
         json_data = JSONRenderer().render(serializer.data)
-
+        
         return Response(medical_request_serializer.data, status=status.HTTP_201_CREATED)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

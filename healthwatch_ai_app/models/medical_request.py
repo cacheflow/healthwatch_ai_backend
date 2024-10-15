@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 from enum import Enum
 
+# Create your models here.
+
 class Duration(Enum):
   LESS_THAN_A_DAY = "Less Than A Day"
   ONE_TO_THREE_DAYS = "1 - 3 Days"

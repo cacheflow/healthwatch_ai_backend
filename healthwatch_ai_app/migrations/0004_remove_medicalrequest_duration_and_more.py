@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='medicalrequest',
             name='duration_type',
-            field=models.CharField(choices=[('days', 'Days'), ('months', 'Months'), ('years', 'Years')], default=('days', 'Days'), max_length=10),
+            field=models.CharField(choices=[('days', 'Days'), ('months', 'Months'), ('years', 'Years')], default=('days', 'Days'), max_length=30),
         ),
     ]

@@ -1,1 +1,2 @@
 from .medical_request_classifier import MedicalRequestClassifier
+from .similar_medical_request_analyzer import SimilarMedicalRequestAnalyzer

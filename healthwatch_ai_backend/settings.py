@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from datetime import timedelta
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -18,6 +20,10 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Auth0 Configuration
+AUTH0_DOMAIN = "dev-kgmrml276di5818u.us.auth0.com"
+AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
+AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -37,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -117,6 +125,30 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SIMPLE_JWT = {  
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=31),  
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),  
+    "ROTATE_REFRESH_TOKENS": False,  
+    "BLACKLIST_AFTER_ROTATION": False,  
+    "UPDATE_LAST_LOGIN": False,  
+    "ALGORITHM": "HS256",  
+    "SIGNING_KEY": os.getenv('SECRET'),  # Use your generated secret here
+    "VERIFYING_KEY": None,  
+    "ISSUER": f"https://{AUTH0_DOMAIN}/",  # Auth0 domain
+    "JWK_URL": f"https://{AUTH0_DOMAIN}/.well-known/jwks.json",  # JWKS URL from Auth0
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),  
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",  
+    "USER_ID_FIELD": "email",  # Could also be 'sub' depending on your setup
+    "USER_ID_CLAIM": "email",  
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),  
+    "TOKEN_TYPE_CLAIM": "token_type",   
+    "JTI_CLAIM": "jti",  
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",  
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),  
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1), 
+}
 
 
 # Internationalization

@@ -9,7 +9,8 @@ class Command(BaseCommand):
     help = 'Load medical requests from a CSV file'
 
     def handle(self, *args, **kwargs):
-        file_paths = ['sample_inmate_medical_requests_16.csv']
+        file_paths = ['training_data.csv']
+        MedicalRequest.objects.filter().delete()
         duration_amount = random.randrange(1, 31)
         duration_type = random.choice([('days', 'Days'), ('months', 'Months'), ('years', 'Years')])
         for path in file_paths:
@@ -18,10 +19,12 @@ class Command(BaseCommand):
             for index, row in df.iterrows():
 
                 medical_requests.append(MedicalRequest(
-                    inmate_id=row['id'],
-                    description=row['request_text'],
+                    inmate_id=row['inmate_id'],
+                    description=row['description'],
                     severity=row['severity'],
                     category=row['category'],
+                    original_cost=row['original_cost'],
+                    escalating_cost=row['escalating_cost'],
                     duration_type=duration_type,
                     duration_amount=duration_amount
                 ))

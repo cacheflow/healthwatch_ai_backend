@@ -1,9 +1,9 @@
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models.medical_request import MedicalRequest
-from .serializers import MedicalRequestSerializer, MedicalCreateRequestSerializer
+from .serializers import MedicalRequestSerializer, MedicalCreateRequestSerializer, AuthSerializer
 import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -11,6 +11,8 @@ from .ml_models import MedicalRequestClassifier
 from .ml_models import SimilarMedicalRequestAnalyzer
 from django.db.models import Q
 import random
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 logger = logging.getLogger(__name__)
 
@@ -53,3 +55,18 @@ class MedicalRequestAPIView(APIView):
         
         return Response(medical_request_serializer.data, status=status.HTTP_201_CREATED)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = AuthSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+
+        # Generate JWT tokens using SimpleJWT
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)

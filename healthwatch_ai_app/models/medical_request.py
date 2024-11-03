@@ -26,7 +26,7 @@ class MedicalRequestSeverity(Enum):
 class MedicalRequest(models.Model):
   created_at = models.DateTimeField(default=timezone.now)
   updated_at = models.DateTimeField(default=timezone.now) 
-  # inmate_id = models.CharField(blank=False, null=False, max_length=16)
+  issue = models.CharField(max_length=100, blank=False, null=False, default='')
   description = models.CharField(max_length=2000)
   category = models.CharField(max_length=30, null=False, blank=False, default='')
   duration_amount = models.FloatField(default=0.5, blank=False)

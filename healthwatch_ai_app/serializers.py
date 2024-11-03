@@ -21,10 +21,15 @@ class InmateSerializer(serializers.ModelSerializer):
 
 class MedicalRequestSerializer(serializers.ModelSerializer):
   severity_label = serializers.SerializerMethodField()
+  created_at_label = serializers.SerializerMethodField()
   inmate = InmateSerializer()
+
   class Meta:
     model = MedicalRequest
-    fields = ['description', 'category', 'severity_label', 'duration_amount', 'duration_type', 'severity', 'escalating_cost', 'original_cost', 'inmate']
+    fields = ['description', 'category', 'created_at_label',
+              'severity_label', 'duration_amount', 'duration_type', 'id',
+              'severity', 'escalating_cost', 'original_cost', 'inmate', 'issue'
+              ]
 
   def get_severity_label(self, obj):
     severity = obj.severity
@@ -33,7 +38,11 @@ class MedicalRequestSerializer(serializers.ModelSerializer):
     
     return SeverityMapping.get_label(severity)
 
+  def get_created_at_label(self, obj):
+    created_at = obj.created_at
+    return created_at.strftime('%B %d, %Y at %I:%M %p')
+
 class MedicalCreateRequestSerializer(serializers.ModelSerializer):
   class Meta:
     model = MedicalRequest
-    fields = ['inmate_id', 'description', 'category', 'duration_amount', 'duration_type', 'severity']
+    fields = ['inmate_id', 'description', 'category', 'duration_amount', 'duration_type', 'severity', 'issue']

@@ -14,17 +14,17 @@ class SeverityMapping:
   def get_label(cls, severity_num):
     return cls.mapping[severity_num].upper()
 
-class UserSerializer(serializers.ModelSerializer):
+class InmateSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('usernaem', 'first_name', 'last_name', 'role')
+    fields = ('username', 'first_name', 'last_name', 'role', 'id')
 
 class MedicalRequestSerializer(serializers.ModelSerializer):
   severity_label = serializers.SerializerMethodField()
-  user = UserSerializer()
+  inmate = InmateSerializer()
   class Meta:
     model = MedicalRequest
-    fields = ['inmate_id', 'description', 'category', 'severity_label', 'duration_amount', 'duration_type', 'severity', 'escalating_cost', 'original_cost', 'user']
+    fields = ['description', 'category', 'severity_label', 'duration_amount', 'duration_type', 'severity', 'escalating_cost', 'original_cost', 'inmate']
 
   def get_severity_label(self, obj):
     severity = obj.severity

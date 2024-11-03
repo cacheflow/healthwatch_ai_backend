@@ -26,13 +26,14 @@ class MedicalRequestSeverity(Enum):
 class MedicalRequest(models.Model):
   created_at = models.DateTimeField(default=timezone.now)
   updated_at = models.DateTimeField(default=timezone.now) 
-  inmate_id = models.CharField(blank=False, null=False, max_length=16)
+  # inmate_id = models.CharField(blank=False, null=False, max_length=16)
   description = models.CharField(max_length=2000)
   category = models.CharField(max_length=30, null=False, blank=False, default='')
   duration_amount = models.FloatField(default=0.5, blank=False)
   escalating_cost = models.IntegerField(default=0, blank=False)
   original_cost = models.IntegerField(default=0, blank=False)
-  user = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE)
+  inmate = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE, null=True, default=True)
+
   duration_type = models.TextField(
     max_length=30,
     default=('days', 'Days'),

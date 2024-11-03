@@ -19,12 +19,12 @@ from healthwatch_ai_app.models.medical_request import MedicalRequest
 from django.urls import path
 from django.urls import include, path
 from rest_framework import routers, serializers, viewsets
-from healthwatch_ai_app.views import MedicalRequestAPIView
+from healthwatch_ai_app.views import MedicalRequestAPIView, MedicalRequestsAPIView
 from django.urls import path
 
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('api/medical-requests', MedicalRequestAPIView.as_view(), name='medical-requests'),
-    path('api/medical-requests', MedicalRequestAPIView.as_view(), name='medical-requests'),
+    path('api/medical-requests/<int:id>', MedicalRequestAPIView.as_view(), name='medical-request'),
+    path('api/medical-requests', MedicalRequestsAPIView.as_view(), name='medical-requests'),
 ]

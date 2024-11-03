@@ -9,6 +9,7 @@ class SimilarMedicalRequestAnalyzer:
   
   @classmethod
   def similar(cls, new_request, previous_request, threshold=0.5):
+    return False
     first_embeddings = cls.model.encode(new_request, convert_to_tensor=True)
     second_embeddings = cls.model.encode(previous_request, convert_to_tensor=True)
     similarity = util.pytorch_cos_sim(first_embeddings, second_embeddings).item()

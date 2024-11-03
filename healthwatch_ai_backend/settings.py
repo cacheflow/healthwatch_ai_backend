@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-load_dotenv()
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(x+8b%u*w)z1-)(fp#zi9o$!3c)vg47mk(-0yr+^%2njwfx)u3'
+ENVIRONMENT = os.getenv("DJANGO_ENV", "development")
+SECRET_KEY = os.getenv("HEALTHWATCH_SECRET_KEY")
+OPEN_API_KEY = os.getenv("HEALTWATCH_OPENAPI_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,5 +139,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-HUGGINGFACE_TOKEN = os.getenv('HUGGINGFACE_TOKEN')
-HUGGINGFACE_INFERENCE_URL = os.getenv('HUGGINGFACE_INFERENCE_URL')
+HUGGINGFACE_TOKEN = os.getenv('HUGGINGFACE_TOKEN', '')
+HUGGINGFACE_INFERENCE_URL = os.getenv('HUGGINGFACE_INFERENCE_URL', '')

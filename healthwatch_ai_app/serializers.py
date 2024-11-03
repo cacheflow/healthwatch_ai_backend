@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models.medical_request import MedicalRequest, MedicalRequestSeverity
+from .models.user import User
 
 class SeverityMapping: 
   mapping = {
@@ -13,11 +14,17 @@ class SeverityMapping:
   def get_label(cls, severity_num):
     return cls.mapping[severity_num].upper()
 
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ('usernaem', 'first_name', 'last_name', 'role')
+
 class MedicalRequestSerializer(serializers.ModelSerializer):
   severity_label = serializers.SerializerMethodField()
+  user = UserSerializer()
   class Meta:
     model = MedicalRequest
-    fields = ['inmate_id', 'description', 'category', 'severity_label', 'duration_amount', 'duration_type', 'severity', 'escalating_cost', 'original_cost']
+    fields = ['inmate_id', 'description', 'category', 'severity_label', 'duration_amount', 'duration_type', 'severity', 'escalating_cost', 'original_cost', 'user']
 
   def get_severity_label(self, obj):
     severity = obj.severity

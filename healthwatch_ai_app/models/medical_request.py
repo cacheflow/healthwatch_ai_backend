@@ -9,7 +9,6 @@ import pdb
 from datetime import timedelta
 from ..ml_models.similar_medical_request_analyzer import SimilarMedicalRequestAnalyzer
 
-# Create your models here.
 
 class Duration(Enum):
   LESS_THAN_A_DAY = "Less Than A Day"
@@ -33,6 +32,7 @@ class MedicalRequest(models.Model):
   duration_amount = models.FloatField(default=0.5, blank=False)
   escalating_cost = models.IntegerField(default=0, blank=False)
   original_cost = models.IntegerField(default=0, blank=False)
+  user = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE)
   duration_type = models.TextField(
     max_length=30,
     default=('days', 'Days'),

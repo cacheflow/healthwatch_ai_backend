@@ -26,8 +26,8 @@ class MedicalRequestSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = MedicalRequest
-    fields = ['description', 'category', 'created_at_label',
-              'severity_label', 'duration_amount', 'duration_type', 'id',
+    fields = ['inmate_description', 'category', 'created_at_label',
+              'severity_label', 'duration_amount', 'duration_type', 'id', 'provider_summary',
               'severity', 'escalating_cost', 'original_cost', 'inmate', 'issue'
               ]
 
@@ -45,4 +45,4 @@ class MedicalRequestSerializer(serializers.ModelSerializer):
 class MedicalCreateRequestSerializer(serializers.ModelSerializer):
   class Meta:
     model = MedicalRequest
-    fields = ['inmate_id', 'description', 'category', 'duration_amount', 'duration_type', 'severity', 'issue']
+    fields = ['inmate_id', 'inmate_description', 'category', 'duration_amount', 'duration_type', 'severity', 'issue']

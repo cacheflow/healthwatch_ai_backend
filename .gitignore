@@ -12,6 +12,7 @@
 /dist/
 /*.egg-info/
 /env/
+.envrc
 MANIFEST
 coverage.*
 

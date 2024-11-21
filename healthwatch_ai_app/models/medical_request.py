@@ -9,7 +9,6 @@ import pdb
 from datetime import timedelta
 from ..ml_models.similar_medical_request_analyzer import SimilarMedicalRequestAnalyzer
 
-# Create your models here.
 
 class Duration(Enum):
   LESS_THAN_A_DAY = "Less Than A Day"
@@ -27,12 +26,15 @@ class MedicalRequestSeverity(Enum):
 class MedicalRequest(models.Model):
   created_at = models.DateTimeField(default=timezone.now)
   updated_at = models.DateTimeField(default=timezone.now) 
-  inmate_id = models.CharField(blank=False, null=False, max_length=16)
-  description = models.CharField(max_length=2000)
+  issue = models.CharField(max_length=100, blank=False, null=False, default='')
+  provider_summary = models.CharField(max_length=2000, default='')
+  inmate_description = models.CharField(max_length=2000)
   category = models.CharField(max_length=30, null=False, blank=False, default='')
   duration_amount = models.FloatField(default=0.5, blank=False)
   escalating_cost = models.IntegerField(default=0, blank=False)
   original_cost = models.IntegerField(default=0, blank=False)
+  inmate = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE, null=True, default=True)
+
   duration_type = models.TextField(
     max_length=30,
     default=('days', 'Days'),

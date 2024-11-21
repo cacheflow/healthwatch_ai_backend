@@ -34,7 +34,14 @@ class MedicalRequest(models.Model):
   escalating_cost = models.IntegerField(default=0, blank=False)
   original_cost = models.IntegerField(default=0, blank=False)
   inmate = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE, null=True, default=True)
-
+  status = models.CharField(
+    default='pending',
+    max_length=30,
+    choices=[('pending', 'Pending'), 
+             ('in_progress', 'In Progress'), ('awaiting_results', 'Awaiting Results'), 
+             ('follow_up_required', 'Follow Up Required'), ('completed', 'Completed')
+             ]
+  )
   duration_type = models.TextField(
     max_length=30,
     default=('days', 'Days'),

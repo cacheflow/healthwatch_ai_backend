@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models.medical_request import MedicalRequest, MedicalRequestSeverity
 from .models.user import User
+import datetime
+import pdb
 
 class SeverityMapping: 
   mapping = {
@@ -32,11 +34,18 @@ class MedicalRequestSerializer(serializers.ModelSerializer):
               ]
 
   def get_severity_label(self, obj):
-    severity = obj.severity
-    if isinstance(severity, str):
-      return ' '.join(word.capitalize() for word in severity.split('_'))
-    
-    return SeverityMapping.get_label(severity)
+    today = datetime.datetime.now().date()
+    created_at = obj.created_at.date()
+    days_diff = (today - created_at).days
+    if days_diff < 2:
+      return 'low'
+    elif days_diff >= 3 and days_diff <= 5:
+      return 'moderate'
+    elif days_diff >= 6 and days_diff <= 7:
+      return 'high'
+    elif days_diff >= 8:
+      return 'critical'
+  
 
   def get_created_at_label(self, obj):
     created_at = obj.created_at

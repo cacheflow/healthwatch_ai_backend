@@ -10,11 +10,25 @@ import pdb
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from .ml_models import MedicalRequestClassifier
-# from .ml_models import SimilarMedicalRequestAnalyzer
+from .services import MedicalDescriptionRefiner
 from django.db.models import Q
 import random
 
 logger = logging.getLogger(__name__)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class MedicalRequestStatusView(APIView):
+    def post(self, request, *args, **kwargs):
+      try: 
+        medical_request_id = kwargs['id']
+        status = request.data['status']
+        request = MedicalRequest.objects.get(pk=medical_request_id)
+        request = request.update(status=status)
+        serializer = MedicalRequestSerializer(request)
+        return Response(serializer.data)
+      except MedicalRequest.DoesNotExist as e:
+        return Response({'error': 'Medical request does not exist', 'status': status.HTTP_404_NOT_FOUND})
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MedicalRequestAPIView(APIView):
@@ -42,7 +56,7 @@ class MedicalRequestsAPIView(APIView):
       try: 
         inmate_id = request.data["inmate_id"]
         description = request.data['description']
-        similar_request = MedicalRequest().find_similar_requests(inmate_id, description)
+        # similar_request = MedicalRequest().find_similar_requests(inmate_id, description)
         serializer = MedicalCreateRequestSerializer(data=request.data)
         if serializer.is_valid():
           medical_request = serializer.save()
@@ -65,6 +79,8 @@ class MedicalRequestsAPIView(APIView):
           medical_request.original_cost=original_cost
           medical_request.save()
           medical_request_serializer = MedicalRequestSerializer(medical_request)
+          medical_description_refiner = MedicalDescriptionRefiner()
+          refined_description = medical_description_refiner.refine(description)
           json_data = JSONRenderer().render(serializer.data)
           
           return Response(json_data, status=status.HTTP_201_CREATED)

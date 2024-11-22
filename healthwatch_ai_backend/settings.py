@@ -141,3 +141,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 HUGGINGFACE_TOKEN = os.getenv('HUGGINGFACE_TOKEN', '')
 HUGGINGFACE_INFERENCE_URL = os.getenv('HUGGINGFACE_INFERENCE_URL', '')
+USERNAME_FIELD = 'identifier'

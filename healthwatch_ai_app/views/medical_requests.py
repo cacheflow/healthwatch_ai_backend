@@ -3,14 +3,14 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import ValidationError, ParseError
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models.medical_request import MedicalRequest
-from .serializers import MedicalRequestSerializer, MedicalCreateRequestSerializer
+from healthwatch_ai_app.models.medical_request import MedicalRequest
+from healthwatch_ai_app.serializers import MedicalRequestSerializer, MedicalCreateRequestSerializer
 import logging
 import pdb
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from .ml_models import MedicalRequestClassifier
-from .services import MedicalDescriptionRefiner
+from healthwatch_ai_app.ml_models import MedicalRequestClassifier
+from healthwatch_ai_app.services import MedicalDescriptionRefiner
 from django.db.models import Q
 import random
 

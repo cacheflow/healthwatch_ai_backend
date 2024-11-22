@@ -10,6 +10,8 @@ class User(AbstractUser):
     created_at = models.DateTimeField(default=timezone.now)
     first_name = models.CharField(max_length=100, blank=True, null=False)
     last_name = models.CharField(max_length=100, blank=True, null=False)
+    inmate_id = models.CharField(max_length=100, blank=True, null=False)
+    identifier = models.CharField(max_length=100, blank=True, null=False)
     password = models.CharField(max_length=128, verbose_name='password')
     updated_at = models.DateTimeField(default=timezone.now) 
     role = models.CharField(max_length=30, choices=ROLE_CHOICES)

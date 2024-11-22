@@ -9,7 +9,12 @@ class GrievanceReport(models.Model):
   created_at = models.DateTimeField(default=timezone.now)
   updated_at = models.DateTimeField(default=timezone.now) 
   category = models.CharField(max_length=100, blank=False, null=False, default='')
-  
+  first_name = models.CharField(max_length=100, blank=False, null=False, default='')
+  last_name = models.CharField(max_length=100, blank=False, null=False, default='')
+  subject = models.CharField(max_length=100, blank=False, null=False, default='')
+  unit_number = models.CharField(max_length=100, blank=False, null=False, default='')
+  assignment = models.CharField(max_length=100, blank=False, null=False, default='')
+  requested_outcome = models.CharField(max_length=100, blank=False, null=False, default='')
   description = models.CharField(max_length=2000)
   due_date = models.DateTimeField(default=timezone.now) 
   inmate = models.ForeignKey('healthwatch_ai_app.User', on_delete=models.CASCADE, null=True, default=True)
